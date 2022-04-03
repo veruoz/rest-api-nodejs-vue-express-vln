@@ -1,18 +1,43 @@
 const express = require('express')
-const { log } = require("nodemon/lib/utils");
 const path = require('path')
-const { request } = require("express");
+const { v4 } = require('uuid')
 const app = express()
 
-const CONTACTS = [
-    { id: 1, name: 'Михаил', value: '+79151112526', marked: false }
+
+let CONTACTS = [
+    { id: v4(), name: 'Михаил', value: '+79151112526', marked: false }
 ]
+
+app.use(express.json())
 
 // создаем ендпоинт GET
 app.get('/api/contacts', (req, res) => {
     setTimeout(() => {
-    res.status(200).json(CONTACTS)
+        res.status(200).json(CONTACTS)
     }, 1000)
+})
+
+// POST
+app.post('/api/contacts', (req, res) => {
+    console.log(req.body)
+    const contact = {...req.body, id: v4(), marked: false}
+    CONTACTS.push(contact)
+    // 201 element created
+    res.status(201).json(contact)
+    // res.json({ test: 1 })
+})
+
+// DELETE
+app.delete('/api/contacts/:id', (req, res) => {
+    CONTACTS = CONTACTS.filter(c => c.id !== req.params.id)
+    res.status(200).json({message: 'Contact was deleted'})
+})
+
+// PUT
+app.put('/api/contacts/:id', (req, res) => {
+    const idx = CONTACTS.findIndex(c => c.id === req.params.id)
+    CONTACTS[idx] = req.body
+    res.json(CONTACTS[idx])
 })
 
 app.use(express.static(path.resolve(__dirname, 'client')))
