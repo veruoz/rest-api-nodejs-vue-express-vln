@@ -1,0 +1,18 @@
+{
+    "name": "rest-api-nodejs-vue-express",
+    "version": "1.0.0",
+    "description": "REST API FullStack",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js"
+    },
+    "author": "Mikhail",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.3"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}
